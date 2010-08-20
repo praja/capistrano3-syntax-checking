@@ -44,6 +44,25 @@ Then build your own tasks by calling the syntax check API, perhaps like this:
       Capistrano::SyntaxChecking.check_javascript('src', :verbose => false)
     end
 
+Configuration
+-------------
+
+You can override the paths that the checker will look in. For the Rails
+recipe, the paths are the usual directoryes -- `app`, `lib` and `config` for
+Ruby files, `app/views` for ERB, and so on. If your Rails layout is a little
+different, then you may have to extend the path list.
+
+To override the path list, set the `syntax_check_paths` variable in
+Capistrano. For example:
+
+    set :syntax_check_paths, :ruby => %w(app lib bin config vendor)
+    
+The keys you may override are `:ruby`, `:erb`, `:javascript` and `:haml`.
+
+You can also override the task output verbosity:
+
+     set :syntax_check_verbose, false
+
 Licensing
 ---------
 

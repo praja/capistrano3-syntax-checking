@@ -14,39 +14,46 @@ module Capistrano
       def check_ruby(paths, options = {})
         verbose = options[:verbose]
         begin
-          ignore_patterns = %w(
-          )
           errors = false
-          directories = %w(
-            app
-            bin
-            lib
-            config
-          )
-          files = directories.map { |d| Dir.glob(File.join(d, "**", "*.rb")) }.flatten
+          files = [paths].flatten.compact.map { |path|
+            Dir.glob(File.join(path, "**", "*.rb"))
+          }.flatten
           files.delete_if { |d| File.directory?(d) }
-          files.delete_if { |d| ignore_patterns.find { |p| d.index(p) } }
-          files.each_with_index do |file_name, index|
-            $stdout.write("\r#{index} files checked (ctrl-C to skip)")
-            $stdout.flush
-            IO.popen("ruby -c '#{file_name}' 2>&1", "r") do |input|
-              input.each_line do |line|
-                unless line =~ /Syntax OK|\d: warning:/
-                  print("\r")
-                  puts(line)
-                  errors = true
+          if files.any?
+            files.each_with_index do |file_name, index|
+              IO.popen("ruby -c '#{file_name}' 2>&1", "r") do |input|
+                input.each_line do |line|
+                  unless line =~ /Syntax OK|\d: warning:/
+                    print("\r")
+                    puts(line)
+                    errors = true
+                  end
                 end
               end
+              if verbose
+                $stdout.write("\r#{index + 1} files checked (ctrl-C to skip)")
+                $stdout.flush
+              end
+            end
+            if errors
+              if verbose
+                print("\r")
+              end
+              abort("One or more syntax errors found. Fix and try again.")
+            else
+              if verbose
+                puts ", no problems found."
+              end
+            end
+          else
+            if verbose
+              puts("No files to check.")
             end
           end
-          if errors
-            print("\r")
-            abort("One or more syntax errors found. Fix and try again.")
-          else
-            puts ", no problems found."
-          end
         rescue Interrupt
-          puts
+          if verbose
+            puts
+          end
           puts("Canceled, skipping.")
         end
       end

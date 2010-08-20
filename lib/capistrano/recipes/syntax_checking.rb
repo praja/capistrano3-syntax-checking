@@ -18,21 +18,46 @@ Capistrano::Configuration.instance.load do
       ruby
       erb
       javascript
+      haml
     end
 
     desc "Test syntax of all JavaScript files"
     task :javascript do
-      Capistrano::SyntaxChecks.check_javascript('public/javascripts', :verbose => true)
+      paths = fetch(:syntax_check_paths, {})[:javascript]
+      paths ||= %w(
+        public/javascripts
+      )
+      Capistrano::SyntaxChecks.check_javascript(paths, :verbose => fetch(:syntax_check_verbose, true))
     end
 
     desc "Test syntax of all Ruby files"
     task :ruby do
-      Capistrano::SyntaxChecks.check_ruby(%w(app lib), :verbose => true)
+      paths = fetch(:syntax_check_paths, {})[:ruby]
+      paths ||= %w(
+        app 
+        lib
+        config
+        scripts
+      )
+      Capistrano::SyntaxChecks.check_ruby(paths, :verbose => fetch(:syntax_check_verbose, true))
     end
 
     desc "Test syntax of all ERB files"
     task :erb do
-      Capistrano::SyntaxChecks.check_erb('app', :verbose => true)
+      paths = fetch(:syntax_check_paths, {})[:erb]
+      paths ||= %w(
+        app 
+      )
+      Capistrano::SyntaxChecks.check_erb(paths, :verbose => fetch(:syntax_check_verbose, true))
+    end
+
+    desc "Test syntax of all HAML files"
+    task :haml do
+      paths = fetch(:syntax_check_paths, {})[:haml]
+      paths ||= %w(
+        app
+      )
+      Capistrano::SyntaxChecks.check_haml(paths, :verbose => fetch(:syntax_check_verbose, true))
     end
 
   end
