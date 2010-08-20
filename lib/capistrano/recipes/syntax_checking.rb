@@ -4,6 +4,7 @@ require 'capistrano'
 require 'capistrano/ext/syntax_checking/erb'
 require 'capistrano/ext/syntax_checking/javascript'
 require 'capistrano/ext/syntax_checking/ruby'
+require 'capistrano/ext/syntax_checking/haml'
 
 unless Capistrano::Configuration.respond_to?(:instance)
   abort "Capistrano syntax checks extensions requires Capistrano 2"

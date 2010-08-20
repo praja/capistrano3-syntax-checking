@@ -1,4 +1,8 @@
-This is a simple extension to Capistrano that adds a few tasks to syntax-check source files.
+This is a simple extension to Capistrano that adds a few pre-deploy 
+syntax-checks for source files.
+
+Currently supported syntaxes are Ruby, ERB, JavaScript (using the Google
+Closure compiler) and HAML.
 
 Installation
 ------------
