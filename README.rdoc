@@ -1,1 +1,0 @@
-This is a simple extension to Capistrano that adds a few tasks to syntax-check source files.
