@@ -11,8 +11,8 @@ Install via gems:
 
     gem install capistrano-syntax-checking
 
-Usage with Rails
-----------------
+Usage with Rails and Capistrano's standard Rails recipe
+-------------------------------------------------------
 
 To use with a Rails application with sensible default, put the following at the 
 top of your `Capfile`:
@@ -29,11 +29,37 @@ To invoke only certain checks, such as only Ruby and ERB:
     before 'deploy:update', "check_syntax:ruby"
     before 'deploy:update', "check_syntax:erb"
     
-Usage with generic (non-Rails) application, or when you want to be in control
------------------------------------------------------------------------------
+Using without Capistrano's standard Rails recipe, or with non-Rails apps
+------------------------------------------------------------------------
+
+If you are not using the Capistrano's built-in Rails support, start the same way:
+
+    require 'capistrano/recipes/syntax_checking'
+
+Then override all the paths to match your application exactly:
+
+    set :syntax_check_paths,
+      :ruby => ["lib/ruby"]     # These are just examples
+      :erb => ["lib/erb"],
+      :javascript => ["public/js"]
+      
+Then make sure the syntax checks are invoked before your deploy task. If your
+deploy task is named "push", then:
+
+    desc "Full deploy ahead!"
+    task :push do
+      # ... your stuff here ...
+    end
+    before :push, :check_syntax
+    
+Refer to Capistrano's documentation on how to otherwise structure your 
+deployment file.
+
+Using the API directly
+----------------------
 
 To use with any other kind of application, you will want to use your own tasks 
-that providecustom options to the syntax-checker. Start by putting this at the 
+that provide custom options to the syntax-checker. Start by putting this at the 
 top of your `Capfile`:
 
     require 'capistrano/ext/syntax_checking'
