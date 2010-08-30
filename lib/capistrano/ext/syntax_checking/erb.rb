@@ -32,8 +32,8 @@ module Capistrano
                 begin
                   template.result
                 rescue SyntaxError => e
-                  $stderr << "\rSyntax error in ERB template #{file_name}: #{e}\n"
-                  $stderr.flush
+                  old_stderr << "\rSyntax error in ERB template #{file_name}: #{e}\n"
+                  old_stderr.flush
                   errors = true
                 rescue Exception
                   # Ignore
