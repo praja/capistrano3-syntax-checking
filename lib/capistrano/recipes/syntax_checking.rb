@@ -19,6 +19,7 @@ Capistrano::Configuration.instance.load do
       erb
       javascript
       haml
+      puts
     end
 
     desc "Test syntax of all JavaScript files"
