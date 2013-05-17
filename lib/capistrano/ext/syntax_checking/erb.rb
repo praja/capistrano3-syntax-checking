@@ -1,4 +1,5 @@
 # encoding: utf-8
+require 'action_view'
 
 module Capistrano
   module SyntaxChecks
@@ -27,10 +28,8 @@ module Capistrano
               end
               old_stderr = $stderr
               begin
-                $stderr = File.open("/dev/null", 'w')
-                template = ERB.new(File.read(file_name), nil, "-")
                 begin
-                  template.result
+                  ActionView::Template::Handlers::Erubis.new(File.read(file_name)).result
                 rescue SyntaxError => e
                   old_stderr << "\rSyntax error in ERB template #{file_name}: #{e}\n"
                   old_stderr.flush
