@@ -10,7 +10,7 @@ require 'capistrano/ext/syntax_checking/haml'
 #   abort "Capistrano syntax checks extensions requires Capistrano 2"
 # end
 
-Capistrano::Configuration.instance.load do
+# Capistrano::Configuration.instance.load do
   namespace :check_syntax do
 
     desc "Check syntax of all files"
@@ -62,4 +62,4 @@ Capistrano::Configuration.instance.load do
     end
 
   end
-end
+# end
