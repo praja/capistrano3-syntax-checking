@@ -6,9 +6,9 @@ require 'capistrano/ext/syntax_checking/javascript'
 require 'capistrano/ext/syntax_checking/ruby'
 require 'capistrano/ext/syntax_checking/haml'
 
-unless Capistrano::Configuration.respond_to?(:instance)
-  abort "Capistrano syntax checks extensions requires Capistrano 2"
-end
+# unless Capistrano::Configuration.respond_to?(:instance)
+#   abort "Capistrano syntax checks extensions requires Capistrano 2"
+# end
 
 Capistrano::Configuration.instance.load do
   namespace :check_syntax do
